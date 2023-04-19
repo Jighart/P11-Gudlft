@@ -13,9 +13,9 @@ class TestLoginUnknownEmail:
     def test_invalid_email(self):
         result = self.client.post("/showSummary", data={"email": "jhbdfkshdvf"})
         assert result.status_code == 401
-        assert "No account related to this email." in result.data.decode()
+        assert "No account found with this email" in result.data.decode()
 
     def test_empty_email(self):
         result = self.client.post("/showSummary", data={"email": ""})
         assert result.status_code == 401
-        assert "Please enter your email." in result.data.decode()
+        assert "Please enter your email" in result.data.decode()

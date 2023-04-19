@@ -35,12 +35,10 @@ def showSummary():
         )
     except IndexError:
         if request.form['email'] == '':
-            flash("Please enter your email.", 'error')
+            flash("Please enter your email", 'error')
         else:
-            flash("No account related to this email.", 'error')
+            flash("No account found with this email", 'error')
         return render_template('index.html'), 401
-    club = [club for club in clubs if club['email'] == request.form['email']][0]
-    return render_template('welcome.html',club=club,competitions=competitions)
 
 
 @app.route('/book/<competition>/<club>')
