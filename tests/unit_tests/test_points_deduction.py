@@ -7,16 +7,16 @@ class TestDeductClubPoints:
     client = app.test_client()
     competition = [
         {
-            "name": "Test",
-            "date": "2020-03-27 10:00:00",
-            "numberOfPlaces": "25"
+            "name": "Test comp",
+            "date": "2023-04-20 00:00:00",
+            "numberOfPlaces": "10"
         }
     ]
 
     club = [
         {
             "name": "Test club",
-            "email": "test_club@email.com",
+            "email": "test@club.com",
             "points": "10"
         }
     ]
@@ -42,7 +42,6 @@ class TestDeductClubPoints:
         assert int(self.club[0]["points"]) == club_points_before - places_booked
 
     def test_points_within_allowed(self):
-        print(self.club[0]["points"])
         self.client.post(
             "/purchasePlaces",
             data={
@@ -51,18 +50,17 @@ class TestDeductClubPoints:
                 "competition": self.competition[0]["name"]
             }
         )
-        print(self.club[0]["points"])
+
         assert int(self.club[0]["points"]) >= 0
 
     def test_more_points_than_allowed(self):
-        print(self.club[0]["points"])
         self.client.post(
             "/purchasePlaces",
             data={
-                "places": 100,
+                "places": 20,
                 "club": self.club[0]["name"],
                 "competition": self.competition[0]["name"]
             }
         )
-        print(self.club[0]["points"])
+
         assert int(self.club[0]["points"]) >= 0
