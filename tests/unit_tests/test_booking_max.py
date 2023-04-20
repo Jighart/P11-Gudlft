@@ -7,8 +7,8 @@ class TestBookMoreThanTwelvePlaces:
     client = app.test_client()
     competition = [
         {
-            "name": "Test",
-            "date": "2020-03-27 10:00:00",
+            "name": "Test comp",
+            "date": "2023-04-20 10:00:00",
             "numberOfPlaces": "40"
         }
     ]
@@ -61,8 +61,8 @@ class TestBookMoreThanTwelvePlaces:
 
         assert result.status_code == 403
 
-    def test_more_than_twelve_total(self):
-        booked = 8
+    def test_more_than_twelve_added(self):
+        booked = 10
 
         result = self.client.post(
             "/purchasePlaces",
