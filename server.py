@@ -47,11 +47,12 @@ places_booked = initialize_booked_places(competitions, clubs)
 def update_booked_places(competition, club, places_required):
     for item in places_booked:
         if item['competition'] == competition['name']:
-            if item['booked'][1] == club['name'] and item['booked'][0] + places_required <= 12:
-                item['booked'][0] += places_required
-                break
-            else:
+            if item['booked'][1] == club['name'] and item['booked'][0] + places_required > int(competition['numberOfPlaces']):
+                raise ValueError("Not enough open places in the competition")
+            elif item['booked'][1] == club['name'] and item['booked'][0] + places_required > 12:
                 raise ValueError("You can't book more than 12 places in a competition.")
+            else:
+                item['booked'][0] += places_required
 
 
 @app.route('/')
@@ -108,9 +109,6 @@ def purchasePlaces():
     if places_required > int(club['points']):
         flash('You don\'t have enough points.')
         return render_template('booking.html', club=club, competition=competition), 403
-    elif places_required > 12:
-        flash('You can\'t book more than 12 places in a competition.')
-        return render_template('booking.html', club=club, competition=competition), 403
     else:
         try:
             update_booked_places(competition, club, places_required)
@@ -123,7 +121,10 @@ def purchasePlaces():
             return render_template('booking.html', club=club, competition=competition), 403
 
 
-# TODO: Add route for points display
+@app.route('/showPointBoard')
+def view_clubs():
+    club_list = sorted(clubs, key=lambda club: club['name'])
+    return render_template('point_board.html', clubs=club_list)
 
 
 @app.route('/logout')
