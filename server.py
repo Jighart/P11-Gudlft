@@ -47,11 +47,15 @@ def purchasePlaces():
     club = [c for c in clubs if c['name'] == request.form['club']][0]
     placesRequired = int(request.form['places'])
     competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
+    club['points'] = int(club['points']) - placesRequired
     flash('Great-booking complete!')
     return render_template('welcome.html', club=club, competitions=competitions)
 
 
-# TODO: Add route for points display
+@app.route('/showPointBoard')
+def view_clubs():
+    club_list = sorted(clubs, key=lambda club: club['name'])
+    return render_template('point_board.html', clubs=club_list)
 
 
 @app.route('/logout')
