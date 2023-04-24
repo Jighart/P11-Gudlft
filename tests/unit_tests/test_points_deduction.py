@@ -21,9 +21,17 @@ class TestDeductClubPoints:
         }
     ]
 
+    places_booked = [
+        {
+            "competition": "Test comp",
+            "booked": [5, "Test club"]
+        }
+    ]
+
     def setup_method(self):
         server.competitions = self.competition
         server.clubs = self.club
+        server.places_booked = self.places_booked
 
     def test_deduct_points(self):
         club_points_before = int(self.club[0]["points"])
