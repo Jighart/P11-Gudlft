@@ -8,8 +8,8 @@ class TestBookMoreThanTwelvePlaces:
     competition = [
         {
             "name": "Test comp",
-            "date": "2023-04-20 10:00:00",
-            "numberOfPlaces": "40"
+            "date": "2024-04-20 10:00:00",
+            "numberOfPlaces": "20"
         }
     ]
 
