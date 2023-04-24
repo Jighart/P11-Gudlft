@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 from flask import Flask,render_template,request,redirect,flash,url_for
 
 
@@ -12,6 +13,19 @@ def loadCompetitions():
     with open('competitions.json') as comps:
          listOfCompetitions = json.load(comps)['competitions']
          return listOfCompetitions
+    
+
+def sort_competitions_date(comps):
+    past = []
+    present = []
+
+    for comp in comps:
+        if datetime.strptime(comp['date'], '%Y-%m-%d %H:%M:%S') < datetime.now():
+            past.append(comp)
+        elif datetime.strptime(comp['date'], '%Y-%m-%d %H:%M:%S') >= datetime.now():
+            present.append(comp)
+
+    return past, present
 
 def initialize_booked_places(comps, clubs_list):
     places = []
@@ -25,6 +39,7 @@ app = Flask(__name__)
 app.secret_key = 'something_special'
 
 competitions = loadCompetitions()
+past_competitions, present_competitions = sort_competitions_date(competitions)
 clubs = loadClubs()
 places_booked = initialize_booked_places(competitions, clubs)
 
@@ -65,10 +80,24 @@ def book(competition,club):
     foundClub = [c for c in clubs if c['name'] == club][0]
     foundCompetition = [c for c in competitions if c['name'] == competition][0]
     if foundClub and foundCompetition:
-        return render_template('booking.html',club=foundClub,competition=foundCompetition)
+        if datetime.strptime(foundCompetition['date'], '%Y-%m-%d %H:%M:%S') < datetime.now():
+            flash("This competition is over.", 'error')
+            return render_template(
+                'welcome.html',
+                club=club,
+                past_competitions=past_competitions,
+                present_competitions=present_competitions
+            ), 403
+        return render_template('booking.html', club=foundClub, competition=foundCompetition)
+
     else:
-        flash("Something went wrong-please try again")
-        return render_template('welcome.html', club=club, competitions=competitions)
+        flash("Something went wrong-please try again", 'error')
+        return render_template(
+            'welcome.html',
+            club=club,
+            past_competitions=past_competitions,
+            present_competitions=present_competitions
+        ), 403
 
 
 @app.route('/purchasePlaces',methods=['POST'])
