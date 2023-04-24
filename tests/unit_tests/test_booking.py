@@ -8,7 +8,7 @@ class TestBookPastCompetition:
     competitions = [
         {
             "name": "Test_closed",
-            "date": "2021-04-27 10:00:00",
+            "date": "2020-04-27 10:00:00",
             "numberOfPlaces": "20"
         },
         {
