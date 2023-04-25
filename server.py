@@ -67,7 +67,8 @@ def showSummary():
         return render_template(
             'welcome.html',
             club=club,
-            competitions=competitions
+            past_competitions=past_competitions,
+            present_competitions=present_competitions
         )
     except IndexError:
         if request.form['email'] == '':
