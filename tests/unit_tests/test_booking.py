@@ -17,7 +17,7 @@ class TestBookMoreThanTwelvePlaces:
         {
             "name": "Test club",
             "email": "test@club.com",
-            "points": "20"
+            "points": "30"
         }
     ]
 
