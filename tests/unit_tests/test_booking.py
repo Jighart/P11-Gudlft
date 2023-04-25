@@ -17,7 +17,7 @@ class TestBookMoreThanTwelvePlaces:
         {
             "name": "Test club",
             "email": "test@club.com",
-            "points": "30"
+            "points": "20"
         }
     ]
 
@@ -48,7 +48,7 @@ class TestBookMoreThanTwelvePlaces:
         assert result.status_code == 200
 
     def test_more_than_twelve(self):
-        booked = 13
+        booked = 15
 
         result = self.client.post(
             "/purchasePlaces",
