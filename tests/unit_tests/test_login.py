@@ -2,7 +2,7 @@ import server
 from server import app
 
 
-class TestLoginUnknownEmail:
+class TestLogin:
     client = app.test_client()
 
     def test_valid_email(self):
@@ -19,3 +19,11 @@ class TestLoginUnknownEmail:
         result = self.client.post("/showSummary", data={"email": ""})
         assert result.status_code == 401
         assert "Please enter your email" in result.data.decode()
+
+    def test_login(self):
+        result = self.client.get("/")
+        assert result.status_code == 200
+
+    def test_logout(self):
+        result = self.client.get("/logout")
+        assert result.status_code == 302

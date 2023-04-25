@@ -8,8 +8,8 @@ class TestBookMoreThanTwelvePlaces:
     competition = [
         {
             "name": "Test comp",
-            "date": "2023-04-20 10:00:00",
-            "numberOfPlaces": "40"
+            "date": "2024-04-20 10:00:00",
+            "numberOfPlaces": "24"
         }
     ]
 
@@ -60,6 +60,7 @@ class TestBookMoreThanTwelvePlaces:
         )
 
         assert result.status_code == 403
+        assert "You can&#39;t book more than 12 places in a competition." in result.data.decode()
 
     def test_more_than_twelve_added(self):
         booked = 10
@@ -74,7 +75,23 @@ class TestBookMoreThanTwelvePlaces:
         )
 
         assert result.status_code == 403
-        
+        assert "You can&#39;t book more than 12 places in a competition." in result.data.decode()
+
+    def test_more_than_open_places(self):
+        booked = 25
+
+        result = self.client.post(
+            "/purchasePlaces",
+            data={
+                "places": booked,
+                "club": self.club[0]["name"],
+                "competition": self.competition[0]["name"]
+            }
+        )
+
+        assert result.status_code == 403
+        assert "Not enough open places in the competition" in result.data.decode()
+
 
 class TestBookPastCompetition:
 
@@ -82,7 +99,7 @@ class TestBookPastCompetition:
     competitions = [
         {
             "name": "Test_closed",
-            "date": "2021-04-27 10:00:00",
+            "date": "2020-04-27 10:00:00",
             "numberOfPlaces": "20"
         },
         {
