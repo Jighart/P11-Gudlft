@@ -48,7 +48,7 @@ class TestBookMoreThanTwelvePlaces:
         assert result.status_code == 200
 
     def test_more_than_twelve(self):
-        booked = 13
+        booked = 15
 
         result = self.client.post(
             "/purchasePlaces",
@@ -125,10 +125,17 @@ class TestBookPastCompetition:
         result = self.client.get(
             f"/book/{self.competitions[0]['name']}/{self.club[0]['name']}"
         )
-        assert result.status_code == 403
+        assert result.status_code == 400
 
     def test_book_open_competition(self):
         result = self.client.get(
             f"/book/{self.competitions[1]['name']}/{self.club[0]['name']}"
         )
         assert result.status_code == 200
+
+    def test_book_inexistant_competition(self):
+        result = self.client.get(
+            f"/book/X/{self.club[0]['name']}"
+        )
+        assert result.status_code == 404
+
