@@ -1,6 +1,6 @@
 import json
 from datetime import datetime
-from flask import Flask,render_template,request,redirect,flash,url_for
+from flask import Flask, render_template, request, redirect, flash, url_for
 
 
 def loadClubs():
@@ -26,6 +26,7 @@ def sort_competitions_date(comps):
             present.append(comp)
 
     return past, present
+
 
 def initialize_booked_places(comps, clubs_list):
     places = []
@@ -60,7 +61,7 @@ def update_booked_places(competition, club, places_required):
 def index():
     return render_template('index.html')
 
-@app.route('/showSummary',methods=['POST'])
+@app.route('/showSummary', methods=['POST'])
 def showSummary():
     try:
         club = [club for club in clubs if club['email'] == request.form['email']][0]
