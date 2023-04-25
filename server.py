@@ -47,12 +47,13 @@ places_booked = initialize_booked_places(competitions, clubs)
 def update_booked_places(competition, club, places_required):
     for item in places_booked:
         if item['competition'] == competition['name']:
-            if item['booked'][1] == club['name'] and item['booked'][0] + places_required > int(competition['numberOfPlaces']):
+            if item['booked'][1] == club['name'] and places_required > int(competition['numberOfPlaces']):
                 raise ValueError("Not enough open places in the competition")
-            elif item['booked'][1] == club['name'] and item['booked'][0] + places_required > 12:
-                raise ValueError("You can't book more than 12 places in a competition.")
-            else:
+            elif item['booked'][1] == club['name'] and item['booked'][0] + places_required <= 12:
                 item['booked'][0] += places_required
+                break
+            else:
+                raise ValueError("You can't book more than 12 places in a competition.")
 
 
 @app.route('/')
