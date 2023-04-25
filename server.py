@@ -79,27 +79,27 @@ def showSummary():
 
 @app.route('/book/<competition>/<club>')
 def book(competition,club):
-    foundClub = [c for c in clubs if c['name'] == club][0]
-    foundCompetition = [c for c in competitions if c['name'] == competition][0]
-    if foundClub and foundCompetition:
-        if datetime.strptime(foundCompetition['date'], '%Y-%m-%d %H:%M:%S') < datetime.now():
-            flash("This competition is over.", 'error')
-            return render_template(
-                'welcome.html',
-                club=club,
-                past_competitions=past_competitions,
-                present_competitions=present_competitions
-            ), 403
-        return render_template('booking.html', club=foundClub, competition=foundCompetition)
+    found_club = [c for c in clubs if c['name'] == club][0]
 
-    else:
+    try:
+        found_competition = [c for c in competitions if c['name'] == competition][0]
+
+        if datetime.strptime(found_competition['date'], '%Y-%m-%d %H:%M:%S') < datetime.now():
+            flash("This competition is over.", 'error')
+            status_code = 400
+        else:
+            return render_template('booking.html', club=found_club, competition=found_competition)
+
+    except IndexError:
         flash("Something went wrong-please try again", 'error')
-        return render_template(
-            'welcome.html',
-            club=club,
-            past_competitions=past_competitions,
-            present_competitions=present_competitions
-        ), 403
+        status_code = 404
+
+    return render_template(
+        'welcome.html',
+        club=found_club,
+        past_competitions=past_competitions,
+        present_competitions=present_competitions
+    ), status_code
 
 
 @app.route('/purchasePlaces',methods=['POST'])
