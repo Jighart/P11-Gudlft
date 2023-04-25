@@ -1,6 +1,7 @@
 import json
 from locust import HttpUser, task, between
 
+
 def loadClubs():
     with open('../../clubs.json') as c:
          listOfClubs = json.load(c)['clubs']
@@ -14,7 +15,7 @@ def loadCompetitions():
 
 
 class LocustTestServer(HttpUser):
-    wait_time = between(1, 5)
+    wait_time = between(1, 3)
     competition = loadCompetitions()[0]
     club = loadClubs()[0]
 
