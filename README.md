@@ -25,7 +25,7 @@
 
 3. Installation
 
-    - After cloning, change into the directory and type <code>virtualenv .</code>. This will then set up a a virtual python environment within that directory.
+    - After cloning, change into the directory and type <code>virtualenv .</code>. This will then set up a virtual python environment within that directory.
 
     - Next, type <code>source bin/activate</code>. You should see that your command prompt has changed to the name of the folder. This means that you can install packages in here without affecting affecting files outside. To deactivate, type <code>deactivate</code>
 
