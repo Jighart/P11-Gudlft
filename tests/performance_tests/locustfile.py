@@ -2,22 +2,22 @@ import json
 from locust import HttpUser, task, between
 
 
-def loadClubs():
+def load_clubs():
     with open('../../clubs.json') as c:
-         listOfClubs = json.load(c)['clubs']
-         return listOfClubs
+        list_of_clubs = json.load(c)['clubs']
+        return list_of_clubs
 
 
-def loadCompetitions():
+def load_competitions():
     with open('../../competitions.json') as comps:
-         listOfCompetitions = json.load(comps)['competitions']
-         return listOfCompetitions
+        list_of_competitions = json.load(comps)['competitions']
+        return list_of_competitions
 
 
 class LocustTestServer(HttpUser):
     wait_time = between(1, 3)
-    competition = loadCompetitions()[0]
-    club = loadClubs()[0]
+    competition = load_competitions()[0]
+    club = load_clubs()[0]
 
     def on_start(self):
         self.client.get("/", name=".index")
